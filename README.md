@@ -2,7 +2,7 @@
 
 **A Complete Online Bookstore Website Project**
 
-Built by students, for students learning web development!
+
 
 This is a fully functional bookstore website where users can browse books, add them to cart, and place orders. Perfect for college/university web development projects.
 
@@ -217,47 +217,6 @@ http://localhost/NETH%20Bookhive/frontend/index.html
 - ✅ Professional looking interface
 - ✅ Real-world functionality
 
-**Good for these subjects:**
-- Web Development
-- Database Management
-- Internet Programming
-- Full Stack Development
-- Software Engineering
-
----
-
-## � Tips for Your Presentation/Demo
-
-1. **Start with splash.html** - It looks professional!
-2. **Show the registration process** - Create an account live
-3. **Browse books** - Use the search feature
-4. **Add to cart** - Show the cart updating
-5. **Complete checkout** - Show the whole process
-
----
-
-## � Security Features (Mention in Report!)
-
-- Passwords are encrypted (not stored as plain text)
-- SQL injection protection
-- Form validation
-- Secure user sessions
-
----
-
-## � Need Help?
-
-**If something doesn't work:**
-1. Check XAMPP - Both Apache and MySQL must be green/running
-2. Run setup.php again if database issues
-3. Clear browser cache (Ctrl + F5)
-4. Check if folder path is correct
-
-**For Screenshots in Report:**
-- Homepage with books
-- Login/Register page
-- Shopping cart
-- Database tables in phpMyAdmin
 
 ---
 
@@ -290,14 +249,20 @@ http://localhost/NETH%20Bookhive/frontend/index.html
 - Keep file sizes under 200KB for faster loading
 
 ---
+## Team Members
+
+- M.Reezma Hanan
+- AJ.Raeef
+- NM.Mahuroos
+- NM.Asrar
+---
 
 ## 🎉 Credits
 
 **Project:** NETH Bookhive  
 **Type:** Online Bookstore Website  
-**Made For:** Web Development Project  
-**Date:** October 2025  
-**Status:** ✅ Fully Working
+**Made For:** Fundamentals Of Software Engineering
+**Date:**31 October 2025  
 
 ---
 
@@ -311,7 +276,6 @@ http://localhost/NETH%20Bookhive/frontend/index.html
 - **Total Pages:** 8 (including splash screen)
 - **Database Tables:** 5
 
-**Perfect for college/university web development project submission!** 📚✨
 
 ---
 
