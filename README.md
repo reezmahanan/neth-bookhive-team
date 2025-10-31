@@ -261,7 +261,7 @@ http://localhost/NETH%20Bookhive/frontend/index.html
 
 **Project:** NETH Bookhive  
 **Type:** Online Bookstore Website  
-**Made For:** Fundamentals Of Software Engineering
+**Made For:** Fundamentals Of Software Engineering   
 **Date:**31 October 2025  
 
 ---
