@@ -1,0 +1,37 @@
+# Git ignore file for NETH Bookhive project
+# This prevents unnecessary files from being uploaded to GitHub
+
+# XAMPP/Server files - Don't upload these
+*.log
+*.tmp
+error_log
+
+# Database credentials (if you create a separate config file)
+config/database.local.php
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+tmp/
+temp/
+
+# Node modules (if you add any later)
+node_modules/
+
+# Environment files (if you add any)
+.env
+.env.local
