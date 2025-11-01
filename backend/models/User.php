@@ -8,6 +8,8 @@ class User {
     public $email;
     public $password;
     public $created_at;
+    public $verified;
+    public $verification_token;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -24,6 +26,26 @@ class User {
         $stmt->bindParam(":name", $this->name);
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":password", $this->password);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function registerWithVerification() {
+        $this->verification_token = bin2hex(random_bytes(32));
+        $query = "INSERT INTO " . $this->table_name . " SET name=:name, email=:email, password=:password, verified=0, verification_token=:token";
+        $stmt = $this->conn->prepare($query);
+
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+
+        $stmt->bindParam(":name", $this->name);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":password", $this->password);
+        $stmt->bindParam(":token", $this->verification_token);
 
         if($stmt->execute()) {
             return true;

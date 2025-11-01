@@ -7,7 +7,9 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    verified TINYINT(1) DEFAULT 0,
+    verification_token VARCHAR(255) DEFAULT NULL
 );
 
 -- Books table
@@ -61,3 +63,11 @@ INSERT INTO books (title, author, description, price, image_url, category, stock
 ('To Kill a Mockingbird', 'Harper Lee', 'A gripping tale of racial injustice', 14.99, 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200&h=280&fit=crop', 'Fiction', 30),
 ('1984', 'George Orwell', 'Dystopian social science fiction', 10.99, 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=200&h=280&fit=crop', 'Science Fiction', 25),
 ('Pride and Prejudice', 'Jane Austen', 'Romantic novel of manners', 9.99, 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200&h=280&fit=crop', 'Romance', 40);
+
+-- Add sample books
+INSERT INTO books (title, author, description, price, category, stock_quantity, image_url) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 'A classic American novel set in the Jazz Age', 12.99, 'Fiction', 50, NULL),
+('To Kill a Mockingbird', 'Harper Lee', 'A gripping tale of racial injustice and childhood innocence', 14.99, 'Fiction', 45, NULL),
+('1984', 'George Orwell', 'A dystopian social science fiction novel', 13.99, 'Science Fiction', 60, NULL),
+('Pride and Prejudice', 'Jane Austen', 'A romantic novel of manners', 11.99, 'Romance', 40, NULL),
+('The Hobbit', 'J.R.R. Tolkien', 'A fantasy novel and prelude to The Lord of the Rings', 15.99, 'Fantasy', 55, NULL);

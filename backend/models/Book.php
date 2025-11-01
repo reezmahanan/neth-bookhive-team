@@ -66,5 +66,106 @@ class Book {
         $stmt->execute();
         return $stmt;
     }
+
+    public function create() {
+        $query = "INSERT INTO " . $this->table_name . " 
+                 SET title=:title, author=:author, description=:description, 
+                     price=:price, image_url=:image_url, category=:category, 
+                     stock_quantity=:stock_quantity";
+        $stmt = $this->conn->prepare($query);
+
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->author = htmlspecialchars(strip_tags($this->author));
+        $this->description = htmlspecialchars(strip_tags($this->description));
+        $this->price = htmlspecialchars(strip_tags($this->price));
+        $this->image_url = htmlspecialchars(strip_tags($this->image_url));
+        $this->category = htmlspecialchars(strip_tags($this->category));
+        $this->stock_quantity = htmlspecialchars(strip_tags($this->stock_quantity));
+
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":author", $this->author);
+        $stmt->bindParam(":description", $this->description);
+        $stmt->bindParam(":price", $this->price);
+        $stmt->bindParam(":image_url", $this->image_url);
+        $stmt->bindParam(":category", $this->category);
+        $stmt->bindParam(":stock_quantity", $this->stock_quantity);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function update() {
+        $query = "UPDATE " . $this->table_name . " 
+                 SET title=:title, author=:author, description=:description, 
+                     price=:price, image_url=:image_url, category=:category, 
+                     stock_quantity=:stock_quantity 
+                 WHERE id=:id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->title = htmlspecialchars(strip_tags($this->title));
+        $this->author = htmlspecialchars(strip_tags($this->author));
+        $this->description = htmlspecialchars(strip_tags($this->description));
+        $this->price = htmlspecialchars(strip_tags($this->price));
+        $this->image_url = htmlspecialchars(strip_tags($this->image_url));
+        $this->category = htmlspecialchars(strip_tags($this->category));
+        $this->stock_quantity = htmlspecialchars(strip_tags($this->stock_quantity));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(":title", $this->title);
+        $stmt->bindParam(":author", $this->author);
+        $stmt->bindParam(":description", $this->description);
+        $stmt->bindParam(":price", $this->price);
+        $stmt->bindParam(":image_url", $this->image_url);
+        $stmt->bindParam(":category", $this->category);
+        $stmt->bindParam(":stock_quantity", $this->stock_quantity);
+        $stmt->bindParam(":id", $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function delete() {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $stmt->bindParam(1, $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getLowStockBooks($threshold = 5) {
+        $query = "SELECT * FROM " . $this->table_name . " 
+                 WHERE stock_quantity > 0 AND stock_quantity < :threshold 
+                 ORDER BY stock_quantity ASC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':threshold', $threshold);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function getOutOfStockBooks() {
+        $query = "SELECT * FROM " . $this->table_name . " 
+                 WHERE stock_quantity = 0 
+                 ORDER BY title";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function checkStockLevel() {
+        if ($this->stock_quantity < 5 && $this->stock_quantity > 0) {
+            return 'low';
+        } elseif ($this->stock_quantity == 0) {
+            return 'out';
+        }
+        return 'normal';
+    }
 }
 ?>

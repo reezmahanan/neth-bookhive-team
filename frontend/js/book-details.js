@@ -4,6 +4,15 @@ const API_BASE = 'http://localhost/NETH%20Bookhive/backend/api';
 // Book Details Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
     loadBookDetails();
+    
+    // Load reviews if on book_details.php page
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+    
+    if (bookId && document.getElementById('reviewsList')) {
+        loadReviews(bookId);
+        setupReviewForm(bookId);
+    }
 });
 
 // Load Book Details
@@ -83,7 +92,7 @@ function displayBookDetails(book) {
                                 ${book.stock_quantity === 0 ? 'disabled' : ''}>
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
-                        <button class="btn btn-secondary" onclick="window.location.href='shop.html'">
+                        <button class="btn btn-secondary" onclick="window.location.href='shop.php'">
                             Continue Shopping
                         </button>
                     </div>
@@ -112,7 +121,119 @@ function showError(message) {
             ${message}
         </div>
         <div style="text-align: center; margin-top: 2rem;">
-            <a href="shop.html" class="btn btn-primary">Back to Shop</a>
+            <a href="shop.php" class="btn btn-primary">Back to Shop</a>
         </div>
     `;
+}
+
+// Load reviews for the book
+async function loadReviews(bookId) {
+    try {
+        const response = await fetch(`${API_BASE}/reviews.php?book_id=${bookId}`);
+        const data = await response.json();
+        
+        const reviewsList = document.getElementById('reviewsList');
+        
+        if (data.success && data.reviews.length > 0) {
+            reviewsList.innerHTML = data.reviews.map(review => `
+                <div style="border-bottom:1px solid #eee;padding:20px 0;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                        <strong style="color:var(--primary);">${review.user_name}</strong>
+                        <span style="color:#999;font-size:0.9em;">${formatDate(review.created_at)}</span>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        ${generateStars(review.rating)}
+                    </div>
+                    <p style="line-height:1.6;color:#555;">${review.review}</p>
+                </div>
+            `).join('');
+        } else {
+            reviewsList.innerHTML = '<p style="color:#666;font-style:italic;">No reviews yet. Be the first to review this book!</p>';
+        }
+    } catch (error) {
+        console.error('Error loading reviews:', error);
+    }
+}
+
+// Generate star HTML
+function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += '<i class="fas fa-star" style="color:#ffd700;"></i>';
+        } else {
+            stars += '<i class="far fa-star" style="color:#ddd;"></i>';
+        }
+    }
+    return stars;
+}
+
+// Format date
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// Setup review form
+function setupReviewForm(bookId) {
+    const reviewForm = document.getElementById('reviewForm');
+    if (!reviewForm) return;
+    
+    reviewForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const reviewData = {
+            book_id: bookId,
+            rating: formData.get('rating'),
+            review: formData.get('review')
+        };
+        
+        try {
+            const response = await fetch(`${API_BASE}/reviews.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('Review submitted successfully!');
+                this.reset();
+                loadReviews(bookId);
+            } else {
+                showToast('Failed to submit review: ' + data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            showToast('Error submitting review', 'error');
+        }
+    });
+}
+
+// Toast notification
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position:fixed;
+        top:80px;
+        right:20px;
+        background:${type === 'success' ? 'var(--success)' : 'var(--danger)'};
+        color:#fff;
+        padding:16px 24px;
+        border-radius:8px;
+        box-shadow:0 4px 16px rgba(0,0,0,0.2);
+        z-index:10000;
+        animation:slideIn 0.3s ease-out;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }

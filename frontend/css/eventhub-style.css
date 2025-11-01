@@ -1,0 +1,490 @@
+/* =============================================
+   EVENTHUB-INSPIRED DESIGN SYSTEM
+   Dark Purple Gradient + Modern UI
+   ============================================= */
+
+/* ===== 1. DARK GRADIENT BACKGROUNDS ===== */
+.hero-dark {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #2d3561 50%, #533483 75%, #7c3aed 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-dark::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+    animation: pulseGlow 8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* ===== 2. GLASSMORPHISM NAVBAR ===== */
+.navbar-glass {
+    background: rgba(26, 26, 46, 0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar-glass .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-glass .nav-logo {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-glass .nav-menu {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.navbar-glass .nav-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-glass .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #a78bfa, #ec4899);
+    transition: width 0.3s ease;
+}
+
+.navbar-glass .nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar-glass .nav-link:hover {
+    color: #a78bfa;
+}
+
+/* ===== 3. HERO CONTENT ===== */
+.hero-content-center {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    padding: 0 20px;
+}
+
+.hero-title-gradient {
+    font-size: 5rem;
+    font-weight: 900;
+    margin: 0 0 30px 0;
+    background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 40%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    animation: fadeInDown 1s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 50px 0;
+    font-weight: 400;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== 4. MODERN BUTTONS ===== */
+.btn-modern-primary {
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    color: white;
+    padding: 18px 45px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-modern-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+}
+
+.btn-modern-primary:hover::before {
+    left: 100%;
+}
+
+.btn-modern-primary:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(124, 58, 237, 0.6);
+}
+
+.btn-modern-secondary {
+    background: transparent;
+    color: white;
+    padding: 18px 45px;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-modern-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #a78bfa;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(167, 139, 250, 0.3);
+}
+
+/* ===== 5. FEATURE CARDS ===== */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 80px 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.feature-card-modern {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card-modern::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.feature-card-modern:hover::before {
+    opacity: 1;
+}
+
+.feature-card-modern:hover {
+    transform: translateY(-15px);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    font-size: 2.5rem;
+    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+}
+
+.feature-card-modern h3 {
+    color: white;
+    font-size: 1.8rem;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+.feature-card-modern p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ===== 6. STATS SECTION ===== */
+.stats-section {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    padding: 80px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-box-modern {
+    text-align: center;
+    padding: 30px;
+}
+
+.stat-number {
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* ===== 7. CTA SECTION ===== */
+.cta-section {
+    text-align: center;
+    padding: 100px 40px;
+    position: relative;
+}
+
+.cta-section h2 {
+    font-size: 3.5rem;
+    color: white;
+    margin: 0 0 30px 0;
+    font-weight: 800;
+}
+
+.cta-section p {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 50px 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== 8. FLOATING PARTICLES ===== */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(167, 139, 250, 0.6);
+    border-radius: 50%;
+    animation: float-particle 20s infinite;
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+    }
+}
+
+/* ===== 9. BOOK CARD MODERN ===== */
+.book-card-dark {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.book-card-dark::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(236, 72, 153, 0.2));
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.book-card-dark:hover::after {
+    opacity: 1;
+}
+
+.book-card-dark:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 20px 60px rgba(124, 58, 237, 0.4);
+}
+
+.book-card-dark h4 {
+    color: white;
+    font-size: 1.3rem;
+    margin: 15px 0 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.book-card-dark p {
+    color: rgba(255, 255, 255, 0.7);
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== 10. SEARCH BAR MODERN ===== */
+.search-bar-modern {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.search-bar-modern:focus-within {
+    border-color: #a78bfa;
+    box-shadow: 0 10px 40px rgba(167, 139, 250, 0.3);
+}
+
+.search-bar-modern input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.1rem;
+    flex: 1;
+    outline: none;
+}
+
+.search-bar-modern input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-bar-modern i {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.3rem;
+}
+
+/* ===== 11. RESPONSIVE DESIGN ===== */
+@media (max-width: 968px) {
+    .hero-title-gradient {
+        font-size: 3.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+        padding: 60px 20px;
+    }
+    
+    .navbar-glass .nav-menu {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title-gradient {
+        font-size: 2.5rem;
+    }
+    
+    .btn-modern-primary,
+    .btn-modern-secondary {
+        padding: 15px 30px;
+        font-size: 1rem;
+    }
+    
+    .navbar-glass .nav-container {
+        padding: 0 20px;
+    }
+}

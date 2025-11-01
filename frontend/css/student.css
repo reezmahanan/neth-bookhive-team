@@ -1,0 +1,59 @@
+/* Student-friendly overrides: larger text, simpler colors, minimal shadows/animations */
+:root {
+    --primary: #2b6cb0; /* calmer blue */
+    --background: #ffffff;
+    --card-bg: #ffffff;
+}
+
+html, body {
+    font-family: 'Verdana', Arial, sans-serif;
+    font-size: 18px; /* larger base font for readability */
+    background: var(--background);
+    color: #222;
+}
+
+/* Simplify header/nav */
+.navbar, .nav-container, .nav-logo h2 {
+    background: #1f3a63 !important;
+}
+.nav-link { color: #fff !important; }
+
+/* Reduce hero height and remove heavy gradients */
+.hero {
+    padding: 80px 0 40px !important;
+    background: linear-gradient(180deg, #2b6cb0 0%, #4a90e2 100%);
+    text-align: center;
+}
+.hero-content h1 { font-size: 2.2rem; margin-bottom: 0.6rem; }
+.hero-content p { font-size: 1rem; margin-bottom: 1rem; }
+
+/* Cards: remove deep shadows and soften borders */
+.book-card, .category-card, .status-card {
+    box-shadow: none !important;
+    border: 1px solid #e6eef9 !important;
+    border-radius: 8px !important;
+}
+
+/* Buttons: simpler rounded look */
+.btn-primary { background: var(--primary) !important; border-radius: 8px !important; padding: 10px 20px !important; }
+
+/* Reduce animations/transforms */
+* { transition: none !important; }
+.book-card:hover { transform: none !important; }
+
+/* Make grid spacing comfortable */
+.books-grid { gap: 1.25rem !important; }
+
+/* Footer: simpler */
+.footer { background: #f2f6fb !important; color: #22313f !important; padding: 30px 0 !important; }
+
+/* Responsive tweaks for students on mobile */
+@media (max-width: 768px) {
+    html, body { font-size: 16px; }
+    .hero { padding: 60px 0 30px !important; }
+}
+
+/* Accessibility: increase contrast where needed */
+.btn-primary { color: #fff !important; }
+
+/* End student.css */

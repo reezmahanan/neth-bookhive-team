@@ -1,193 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - NETH Bookhive</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .checkout-section {
-            padding: 120px 0 80px;
-            margin-top: 60px;
-        }
+<?php
+$page_title = "Checkout - NETH Bookhive";
+$extra_js = ['js/checkout.js'];
 
+// Add inline styles for checkout page
+$extra_css_inline = '
+<style>
+    .checkout-section {
+        padding: 120px 0 80px;
+        margin-top: 60px;
+    }
+
+    .checkout-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+    }
+
+    .checkout-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .checkout-form h2 {
+        margin-bottom: 2rem;
+        color: #2c3e50;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    .form-section h3 {
+        margin-bottom: 1rem;
+        color: #3498db;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .order-summary {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        padding: 1rem 0;
+        border-bottom: 1px solid #ecf0f1;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .order-item-info h4 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .order-item-info p {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .order-totals {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px solid #ecf0f1;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .grand-total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        border-top: 1px solid #ecf0f1;
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .field-error {
+        color: #e74c3c;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    input.error, select.error {
+        border-color: #e74c3c !important;
+    }
+
+    .order-success {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: #27ae60;
+        margin-bottom: 1rem;
+    }
+
+    .order-details {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 5px;
+        margin: 2rem 0;
+        text-align: left;
+    }
+
+    .success-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
         .checkout-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 3rem;
-        }
-
-        .checkout-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .checkout-form h2 {
-            margin-bottom: 2rem;
-            color: #2c3e50;
-        }
-
-        .form-section {
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .form-section h3 {
-            margin-bottom: 1rem;
-            color: #3498db;
+            grid-template-columns: 1fr;
         }
 
         .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            grid-template-columns: 1fr;
         }
 
         .order-summary {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
-        .order-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            padding: 1rem 0;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .order-item-info h4 {
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .order-item-info p {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .order-totals {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 2px solid #ecf0f1;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .grand-total {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2c3e50;
-            border-top: 1px solid #ecf0f1;
-            padding-top: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .field-error {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
-
-        input.error, select.error {
-            border-color: #e74c3c !important;
-        }
-
-        .order-success {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            color: #27ae60;
-            margin-bottom: 1rem;
-        }
-
-        .order-details {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 5px;
-            margin: 2rem 0;
-            text-align: left;
+            position: static;
         }
 
         .success-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
         }
+    }
+</style>
+';
 
-        @media (max-width: 768px) {
-            .checkout-content {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .order-summary {
-                position: static;
-            }
-
-            .success-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>NETH Bookhive</h2>
-            </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="shop.html" class="nav-link">Shop</a>
-                <a href="about.html" class="nav-link">About</a>
-                <div class="nav-auth">
-                    <a href="login.html" class="nav-link" id="loginLink">Login</a>
-                    <a href="register.html" class="nav-link" id="registerLink">Register</a>
-                    <a href="#" class="nav-link" id="logoutLink" style="display: none;">Logout</a>
-                    <span id="userName" style="display: none;"></span>
-                </div>
-                <a href="cart.html" class="nav-link cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </a>
-            </div>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+include 'includes/header.php';
+echo $extra_css_inline;
+?>
 
     <!-- Checkout Section -->
     <section class="checkout-section">
@@ -292,7 +265,6 @@
                                         <option value="US">United States</option>
                                         <option value="CA">Canada</option>
                                         <option value="UK">United Kingdom</option>
-                                        <!-- Add more countries as needed -->
                                     </select>
                                 </div>
                             </div>
@@ -348,30 +320,4 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>NETH Bookhive</h3>
-                    <p>Your favorite online bookstore for all genres.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <a href="index.html">Home</a>
-                    <a href="shop.html">Shop</a>
-                    <a href="about.html">About</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: info@nethbookhive.com</p>
-                    <p>Phone: +1 234 567 890</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
-    <script src="js/checkout.js"></script>
-</body>
-</html>
+<?php include 'includes/footer.php'; ?>

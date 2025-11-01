@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - NETH Bookhive</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/student.css">
+    <link rel="stylesheet" href="css/unique-vibes.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .wishlist-section {
+            padding: 4rem 0;
+            min-height: calc(100vh - 200px);
+            background: #f8f9fa;
+        }
+
+        .wishlist-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wishlist-header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .wishlist-count {
+            background: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .wishlist-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .wishlist-card-image {
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .wishlist-card-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-wishlist {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-wishlist:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .wishlist-card-content {
+            padding: 1.5rem;
+        }
+
+        .wishlist-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .wishlist-card-author {
+            color: #7f8c8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .wishlist-card-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #27ae60;
+            margin: 1rem 0;
+        }
+
+        .wishlist-card-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .wishlist-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            padding: 0.75rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-cart:hover {
+            background: #2980b9;
+        }
+
+        .btn-view {
+            padding: 0.75rem 1rem;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view:hover {
+            background: #bdc3c7;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .empty-wishlist i {
+            font-size: 5rem;
+            color: #ecf0f1;
+            margin-bottom: 1rem;
+        }
+
+        .empty-wishlist h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .empty-wishlist p {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+
+        .btn-clear-wishlist {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-wishlist:hover {
+            background: #c0392b;
+        }
+
+        @media (max-width: 768px) {
+            .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wishlist-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>NETH Bookhive</h2>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="about.html" class="nav-link">About</a>
+                <div class="nav-auth">
+                    <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                    <a href="register.html" class="nav-link" id="registerLink">Register</a>
+                    <a href="profile.html" class="nav-link" id="profileLink" style="display: none;"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" class="nav-link" id="logoutLink" style="display: none;">Logout</a>
+                    <span id="userName" style="display: none;"></span>
+                </div>
+                <a href="cart.html" class="nav-link cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Wishlist Section -->
+    <section class="wishlist-section">
+        <div class="container">
+            <div class="wishlist-header">
+                <h1><i class="fas fa-heart"></i> My Wishlist</h1>
+                <div>
+                    <span class="wishlist-count" id="wishlistCount">4 items</span>
+                    <button class="btn-clear-wishlist" id="clearWishlistBtn" style="margin-left: 1rem;">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+
+            <div id="wishlistContainer">
+                <div class="wishlist-grid">
+                    <!-- Wishlist Item 1 -->
+                    <div class="wishlist-card">
+                        <div class="wishlist-card-image">
+                            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-book-open" style="font-size: 4rem; color: white;"></i>
+                            </div>
+                            <button class="remove-wishlist" onclick="alert('Remove from wishlist')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="wishlist-card-content">
+                            <h3>To Kill a Mockingbird</h3>
+                            <p class="wishlist-author">by Harper Lee</p>
+                            <div class="wishlist-card-footer">
+                                <span class="wishlist-price">Rs. 1,499</span>
+                                <button class="btn-add-to-cart" onclick="alert('Added to cart!')">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 2 -->
+                    <div class="wishlist-card">
+                        <div class="wishlist-card-image">
+                            <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-book-open" style="font-size: 4rem; color: white;"></i>
+                            </div>
+                            <button class="remove-wishlist" onclick="alert('Remove from wishlist')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="wishlist-card-content">
+                            <h3>1984</h3>
+                            <p class="wishlist-author">by George Orwell</p>
+                            <div class="wishlist-card-footer">
+                                <span class="wishlist-price">Rs. 1,099</span>
+                                <button class="btn-add-to-cart" onclick="alert('Added to cart!')">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 3 -->
+                    <div class="wishlist-card">
+                        <div class="wishlist-card-image">
+                            <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-book-open" style="font-size: 4rem; color: white;"></i>
+                            </div>
+                            <button class="remove-wishlist" onclick="alert('Remove from wishlist')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="wishlist-card-content">
+                            <h3>Pride and Prejudice</h3>
+                            <p class="wishlist-author">by Jane Austen</p>
+                            <div class="wishlist-card-footer">
+                                <span class="wishlist-price">Rs. 649</span>
+                                <button class="btn-add-to-cart" onclick="alert('Added to cart!')">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Item 4 -->
+                    <div class="wishlist-card">
+                        <div class="wishlist-card-image">
+                            <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-book-open" style="font-size: 4rem; color: white;"></i>
+                            </div>
+                            <button class="remove-wishlist" onclick="alert('Remove from wishlist')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="wishlist-card-content">
+                            <h3>The Great Gatsby</h3>
+                            <p class="wishlist-author">by F. Scott Fitzgerald</p>
+                            <div class="wishlist-card-footer">
+                                <span class="wishlist-price">Rs. 1,299</span>
+                                <button class="btn-add-to-cart" onclick="alert('Added to cart!')">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/accessibility.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wishlist.js"></script>
+</body>
+</html>

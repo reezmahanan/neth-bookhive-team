@@ -1,3 +1,122 @@
+// Add to Cart Logic with Database Sync
+async function addToCart(bookId, quantity = 1) {
+    console.log('Adding to cart:', bookId);
+    
+    try {
+        // Add to database
+        const response = await fetch('backend/api/cart_api.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                book_id: bookId,
+                quantity: quantity
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Also update localStorage as backup
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existing = cart.find(item => item.id === bookId);
+            if (existing) {
+                existing.qty += quantity;
+            } else {
+                cart.push({ id: bookId, qty: quantity });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            updateCartCount();
+            showToast('Added to cart!');
+        } else {
+            showToast('Failed to add to cart', 'error');
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        // Fallback to localStorage only
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existing = cart.find(item => item.id === bookId);
+        if (existing) {
+            existing.qty += quantity;
+        } else {
+            cart.push({ id: bookId, qty: quantity });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        showToast('Added to cart!');
+    }
+}
+
+// Wishlist Logic
+function addToWishlist(bookId) {
+    console.log('Adding to wishlist:', bookId);
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    if (!wishlist.includes(bookId)) {
+        wishlist.push(bookId);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        showToast('Added to wishlist!');
+    } else {
+        showToast('Already in wishlist!');
+    }
+}
+
+// Update Cart Count in Header
+async function updateCartCount() {
+    try {
+        // Try to get from database first
+        const response = await fetch('backend/api/cart_api.php?action=count');
+        const data = await response.json();
+        
+        if (data.success) {
+            const cartBadge = document.querySelector('.cart-count');
+            if (cartBadge) {
+                cartBadge.textContent = data.count;
+            }
+            return;
+        }
+    } catch (error) {
+        console.error('Error getting cart count:', error);
+    }
+    
+    // Fallback to localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    const cartBadge = document.querySelector('.cart-count');
+    if (cartBadge) {
+        cartBadge.textContent = totalItems;
+    }
+}
+
+// Show Toast Notification
+function showToast(message, type = 'success') {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            background: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+            color: #fff;
+            padding: 16px 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => { 
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.style.display = 'none', 300);
+    }, 2000);
+}
 // API Base URL
 const API_BASE = 'http://localhost/NETH%20Bookhive/backend/api';
 
@@ -81,13 +200,36 @@ async function loadFeaturedBooks() {
     if (!featuredBooksContainer) return;
 
     try {
+        console.log('Fetching books from:', `${API_BASE}/books.php`); // Debug
         const response = await fetch(`${API_BASE}/books.php`);
+        
+        console.log('Response status:', response.status); // Debug
+        console.log('Response OK:', response.ok); // Debug
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const books = await response.json();
+        console.log('Books received:', books); // Debug
 
-        if (books.length > 0) {
-            // Show only first 4 books for featured section
-            const featuredBooks = books.slice(0, 4);
+        if (books && books.length > 0) {
+            // Pick 4 random books for featured section
+            const shuffled = books.sort(() => 0.5 - Math.random());
+            const featuredBooks = shuffled.slice(0, 4);
             displayBooks(featuredBooks, featuredBooksContainer);
+            // Animate book cards with GSAP
+            setTimeout(() => {
+                if (window.gsap) {
+                    gsap.from('.book-card', {
+                        duration: 0.8,
+                        y: 40,
+                        opacity: 0,
+                        stagger: 0.15,
+                        ease: 'power2.out'
+                    });
+                }
+            }, 100); // Wait for DOM update
         } else {
             featuredBooksContainer.innerHTML = `
                 <div class="empty-state">
@@ -161,12 +303,14 @@ function checkAuthStatus() {
     const user = JSON.parse(localStorage.getItem('user'));
     const loginLink = document.getElementById('loginLink');
     const registerLink = document.getElementById('registerLink');
+    const profileLink = document.getElementById('profileLink');
     const logoutLink = document.getElementById('logoutLink');
     const userName = document.getElementById('userName');
 
     if (user) {
         if (loginLink) loginLink.style.display = 'none';
         if (registerLink) registerLink.style.display = 'none';
+        if (profileLink) profileLink.style.display = 'block';
         if (logoutLink) logoutLink.style.display = 'block';
         if (userName) {
             userName.style.display = 'inline';
@@ -175,6 +319,7 @@ function checkAuthStatus() {
     } else {
         if (loginLink) loginLink.style.display = 'block';
         if (registerLink) registerLink.style.display = 'block';
+        if (profileLink) profileLink.style.display = 'none';
         if (logoutLink) logoutLink.style.display = 'none';
         if (userName) userName.style.display = 'none';
     }
@@ -297,4 +442,59 @@ function getUrlParams() {
         result[key] = value;
     }
     return result;
+}
+
+// Scroll Reveal Animations for Feature Cards
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Add staggered delay for each card
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, index * 150);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all feature cards
+    document.querySelectorAll('.feature-card-premium').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(50px)';
+        card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        observer.observe(card);
+    });
+
+    // Also animate section title
+    const sectionTitle = document.querySelector('.section-title-premium');
+    if (sectionTitle) {
+        const titleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    titleObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sectionTitle.style.opacity = '0';
+        sectionTitle.style.transform = 'translateY(30px)';
+        sectionTitle.style.transition = 'all 0.8s ease-out';
+        titleObserver.observe(sectionTitle);
+    }
+}
+
+// Initialize animations when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollAnimations);
+} else {
+    initScrollAnimations();
 }

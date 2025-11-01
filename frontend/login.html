@@ -3,54 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - NETH Bookhive</title>
+    <title>Login - NETH BookHive</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/student.css">
+    <link rel="stylesheet" href="css/unique-vibes.css">
+    <link rel="stylesheet" href="css/premium-design.css">
+    <link rel="stylesheet" href="css/responsive.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(240, 99, 184, 0.15) 0%, transparent 50%);
+        }
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .auth-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 50px 45px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+        }
+        .auth-card h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .auth-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            font-size: 1.05rem;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #a29bfe;
+            box-shadow: 0 0 20px rgba(162, 155, 254, 0.3);
+        }
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .auth-links {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .auth-links a {
+            color: #a29bfe;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .auth-links a:hover {
+            color: #fd79a8;
+        }
+        .back-home {
+            text-align: center;
+            margin-top: 25px;
+        }
+        .back-home a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        .back-home a:hover {
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>NETH Bookhive</h2>
-            </div>
-            <div class="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="shop.html" class="nav-link">Shop</a>
-                <a href="about.html" class="nav-link">About</a>
-                <div class="nav-auth">
-                    <a href="login.html" class="nav-link active">Login</a>
-                    <a href="register.html" class="nav-link">Register</a>
-                </div>
-                <a href="cart.html" class="nav-link cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-
     <!-- Login Form -->
-    <section class="auth-section">
-        <div class="container">
-            <div class="auth-form">
-                <h2>Login to Your Account</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
-                <p>Don't have an account? <a href="register.html">Register here</a></p>
-                <div id="authMessage"></div>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Welcome Back</h2>
+            <p class="auth-subtitle">Sign in to your BookHive account</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-premium btn-filled" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+                <div id="authMessage" style="margin-top: 20px;"></div>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="register.html">Create Account</a></p>
+            </div>
+            <div class="back-home">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="js/auth.js"></script>
 </body>

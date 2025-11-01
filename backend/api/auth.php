@@ -24,9 +24,16 @@ switch($method) {
                 $user->email = $data->email;
                 $user->password = $data->password;
                 
-                if($user->register()) {
+                if($user->registerWithVerification()) {
+                    // Send verification email
+                    $to = $user->email;
+                    $subject = "Verify your NETH Bookhive account";
+                    $verify_link = "http://localhost/NETH%20Bookhive/verify.php?token=" . $user->verification_token;
+                    $message = "Click the following link to verify your account: $verify_link";
+                    mail($to, $subject, $message);
+
                     http_response_code(201);
-                    echo json_encode(array("message" => "User registered successfully."));
+                    echo json_encode(array("message" => "User registered. Please check your email to verify your account."));
                 } else {
                     http_response_code(503);
                     echo json_encode(array("message" => "Unable to register user."));
